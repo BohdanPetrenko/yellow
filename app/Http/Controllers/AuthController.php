@@ -66,7 +66,7 @@ class AuthController extends Controller
      * @return SignInResource|JsonResponse
      * @throws ValidationException
      */
-    public function signIn(Request $request, UserService $userService)
+    public function signIn(Request $request, UserService $userService): SignInResource|JsonResponse
     {
         $this->validate($request, [
             'email'    => 'required|exists:users,email',
