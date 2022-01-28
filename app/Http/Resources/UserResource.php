@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserRegisterResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * @param $request

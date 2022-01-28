@@ -24,4 +24,12 @@ class UserRepository implements UserRepositoryContract
     {
         return $this->user->newQuery()->create($data->toStore());
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findByEmail(string $email): User
+    {
+        return $this->user->newQuery()->where('email', $email)->firstOrFail();
+    }
 }

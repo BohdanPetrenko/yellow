@@ -27,8 +27,7 @@ class UserFactory extends Factory
             'password'       => $this->faker->password(10),
             'email'          => $this->faker->unique()->safeEmail,
             'phone'          => $this->faker->phoneNumber,
-            'remember_token' => $this->faker->asciify('********************'),
-
+//            'remember_token' => $this->faker->asciify('********************'),
         ];
     }
 }

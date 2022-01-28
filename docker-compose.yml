@@ -2,7 +2,6 @@ version: '2.4'
 services:
   app:
     container_name: yellow-app
-    container_name: app
     mem_limit: 1024m
     mem_reservation: 300m
     logging:

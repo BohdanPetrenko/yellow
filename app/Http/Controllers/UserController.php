@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DataObjects\UserRegisterData;
-use App\Http\Resources\UserRegisterResource;
+use App\Http\Resources\UserResource;
 use App\Services\User\RegisterService;
+use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class UserController extends Controller
     /**
      * @throws ValidationException
      */
-    public function register(Request $request, RegisterService $registerService)
+    public function register(Request $request, UserService $registerService)
     {
         $this->validate($request, [
             'first_name' => 'required',
@@ -27,6 +28,6 @@ class UserController extends Controller
         $data = UserRegisterData::fromRequest($request->all());
         $user = $registerService->register($data);
 
-        return UserRegisterResource::make($user)->response()->setStatusCode(Response::HTTP_CREATED);
+        return UserResource::make($user)->response()->setStatusCode(Response::HTTP_CREATED);
     }
 }

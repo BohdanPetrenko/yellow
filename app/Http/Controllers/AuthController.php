@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SignInResource;
+use App\Services\User\UserService;
 use App\ValueObject\PasswordObject;
 use Illuminate\Auth\Passwords\PasswordBrokerManager;
 use Illuminate\Http\JsonResponse;
@@ -59,23 +61,26 @@ class AuthController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * @param Request     $request
+     * @param UserService $userService
+     * @return SignInResource|JsonResponse
      * @throws ValidationException
      */
-    public function signIn(Request $request)
+    public function signIn(Request $request, UserService $userService)
     {
         $this->validate($request, [
-            'email'    => 'required|exists:states,email',
+            'email'    => 'required|exists:users,email',
             'password' => 'required',
         ]);
 
         $credentials = request(['email', 'password']);
+        $userService->isUserPassword($request->input('email'), $request->input('password'));
+        $token = auth()->attempt($credentials);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token) {
             return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->respondWithToken($token);
+        return SignInResource::make($token);
     }
 }

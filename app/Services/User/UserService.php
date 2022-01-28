@@ -5,8 +5,9 @@ namespace App\Services\User;
 use App\DataObjects\UserRegisterData;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
+use InvalidArgumentException;
 
-class RegisterService
+class UserService
 {
     /**
      * @param UserRepositoryContract $userRepository
@@ -24,5 +25,18 @@ class RegisterService
     public function register(UserRegisterData $data): User
     {
         return $this->userRepository->create($data);
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    public function isUserPassword(string $email, string $password): bool
+    {
+        $user = $this->userRepository->findByEmail($email);
+
+        return $user->isSamePassword($password) ? true : throw new InvalidArgumentException('Wrong user password');
     }
 }

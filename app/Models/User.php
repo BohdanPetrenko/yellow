@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Lumen\Auth\Authorizable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * @property int                  id
@@ -27,7 +28,7 @@ use Laravel\Lumen\Auth\Authorizable;
  *
  * @property Collection|Company[] companies
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordInterface
+class User extends Model implements JWTSubject, AuthenticatableContract, AuthorizableContract, CanResetPasswordInterface
 {
     use Authenticatable, Authorizable, HasFactory, CanResetPassword, Notifiable;
 
@@ -50,10 +51,35 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * @param string $password
+     * @return bool
+     */
+    public function isSamePassword(string $password): bool
+    {
+        return password_verify($password, $this->password);
+    }
+
+    /**
      * @return HasMany
      */
     public function companies(): HasMany
     {
         return $this->hasMany(Company::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [];
     }
 }
