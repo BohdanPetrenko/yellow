@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\ValueObject\PasswordObject;
 use Illuminate\Auth\Passwords\PasswordBrokerManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -15,7 +17,7 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function generateResetToken(Request $request)
+    public function generateResetToken(Request $request): JsonResponse
     {
         $this->validate($request, ['email' => 'required|email']);
 
@@ -34,11 +36,10 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request): JsonResponse
     {
         $rules = [
             'token'    => 'required',
-            'username' => 'required|string',
             'password' => 'required|confirmed|min:6',
         ];
         $this->validate($request, $rules);
@@ -47,7 +48,7 @@ class AuthController extends Controller
         $response              = $passwordBrokerManager->reset(
             $request->only('password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->password = app('hash')->make($password);
+                $user->password = (new PasswordObject($password))->getHashed();
                 $user->save();
             }
         );
@@ -72,7 +73,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->respondWithToken($token);

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\DataObjects\UserRegisterData;
 use App\Http\Resources\UserRegisterResource;
 use App\Services\User\RegisterService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -27,6 +27,6 @@ class UserController extends Controller
         $data = UserRegisterData::fromRequest($request->all());
         $user = $registerService->register($data);
 
-        return UserRegisterResource::make($user)->response()->setStatusCode(201);
+        return UserRegisterResource::make($user)->response()->setStatusCode(Response::HTTP_CREATED);
     }
 }

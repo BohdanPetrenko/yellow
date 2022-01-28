@@ -16,10 +16,11 @@
 $router->group([
     'prefix' => 'user',
 ], function () use ($router) {
-    $router->post('register', 'UserController@register');
-    $router->post('sign-in', 'AuthController@signIn');
-    $router->post('recover-password', 'AuthController@generateResetToken');
-    $router->put('resetpassword', 'AuthController@resetPassword');
+    $router->post('register', ['as' => 'user.register', 'uses' => 'UserController@register']);
+
+    $router->post('sign-in', ['as' => 'auth.sign-in', 'uses' => 'AuthController@signIn']);
+    $router->post('recover-password', ['as' => 'password.recover', 'uses' => 'AuthController@generateResetToken']);
+    $router->put('resetpassword', ['as' => 'password.reset', 'uses' => 'AuthController@resetPassword']);
 
     $router->group([
         'middleware' => ['auth'],
@@ -27,3 +28,4 @@ $router->group([
 //        $router->get()
     });
 });
+

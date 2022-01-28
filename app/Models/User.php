@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Lumen\Auth\Authorizable;
 
@@ -28,7 +29,7 @@ use Laravel\Lumen\Auth\Authorizable;
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordInterface
 {
-    use Authenticatable, Authorizable, HasFactory, CanResetPassword;
+    use Authenticatable, Authorizable, HasFactory, CanResetPassword, Notifiable;
 
     /**
      * The attributes that are mass assignable.

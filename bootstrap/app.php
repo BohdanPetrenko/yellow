@@ -57,7 +57,8 @@ $app->singleton(
 | the default version. You may register other files below as needed.
 |
 */
-
+$app->configure('auth');
+$app->configure('mail');
 $app->configure('app');
 
 /*
@@ -94,6 +95,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Illuminate\Notifications\NotificationServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
+
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 

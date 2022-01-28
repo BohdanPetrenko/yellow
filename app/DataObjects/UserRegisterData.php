@@ -2,21 +2,23 @@
 
 namespace App\DataObjects;
 
+use App\ValueObject\PasswordObject;
+
 class UserRegisterData
 {
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
-     * @param string $password
-     * @param string $phone
+     * @param string         $firstName
+     * @param string         $lastName
+     * @param string         $email
+     * @param PasswordObject $password
+     * @param string         $phone
      */
     public function __construct(
-        private string $firstName,
-        private string $lastName,
-        private string $email,
-        private string $password,
-        private string $phone,
+        private string         $firstName,
+        private string         $lastName,
+        private string         $email,
+        private PasswordObject $password,
+        private string         $phone,
     )
     {
     }
@@ -27,12 +29,11 @@ class UserRegisterData
     public function toStore(): array
     {
         return [
-            'first_name'     => $this->firstName,
-            'last_name'      => $this->lastName,
-            'email'          => $this->email,
-            'password'       => password_hash($this->password, PASSWORD_BCRYPT),
-            'phone'          => $this->phone,
-//            'remember_token' =>
+            'first_name' => $this->firstName,
+            'last_name'  => $this->lastName,
+            'email'      => $this->email,
+            'password'   => $this->password->getHashed(),
+            'phone'      => $this->phone,
         ];
     }
 
@@ -46,7 +47,7 @@ class UserRegisterData
             $data['first_name'],
             $data['last_name'],
             $data['email'],
-            $data['password'],
+            new PasswordObject($data['password']),
             $data['phone'],
         );
     }
