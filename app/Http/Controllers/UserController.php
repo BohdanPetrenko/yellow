@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\DataObjects\UserRegisterData;
 use App\Http\Resources\UserResource;
-use App\Services\User\RegisterService;
 use App\Services\User\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
+     * @param Request     $request
+     * @param UserService $registerService
+     * @return JsonResponse
      * @throws ValidationException
      */
-    public function register(Request $request, UserService $registerService)
+    public function register(Request $request, UserService $registerService): JsonResponse
     {
         $this->validate($request, [
             'first_name' => 'required',
