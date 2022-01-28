@@ -18,7 +18,7 @@ class Users extends Migration
             $table->string('first_name',60);
             $table->string('last_name',60);
             $table->string('email')->unique();
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('password');
             $table->timestamps();
         });

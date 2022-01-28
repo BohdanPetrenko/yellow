@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Support\Carbon;
  * @property string description
  * @property Carbon updated_at
  * @property Carbon created_at
+ *
+ * @property User   user
  */
 class Company extends Model
 {
@@ -28,6 +31,14 @@ class Company extends Model
      * @var string[]
      */
     protected $fillable = [
-        'title', 'phone', 'description'
+        'title', 'phone', 'description',
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

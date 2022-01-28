@@ -25,7 +25,8 @@ $router->group([
     $router->group([
         'middleware' => ['auth'],
     ], function () use ($router) {
-        $router->get('companies', ['as'=> 'user.companies', 'uses' => 'CompanyController@index']);
+        $router->get('companies', ['as' => 'company.index', 'uses' => 'CompanyController@index']);
+        $router->post('companies', ['as' => 'company.store', 'uses' => 'CompanyController@store']);
     });
 });
 

@@ -17,9 +17,11 @@ class Companies extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('title');
-            $table->string('phone')->unique();
-            $table->string('description')->unique();
+            $table->string('phone');
+            $table->string('description');
             $table->timestamps();
+
+            $table->unique(['user_id','title']);
         });
     }
 

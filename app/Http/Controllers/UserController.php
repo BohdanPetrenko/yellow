@@ -20,9 +20,9 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'last_name'  => 'required|string',
-            'email'      => 'required|email',
+            'email'      => 'required|email|unique:users,email',
             'password'   => 'required|string',
-            'phone'      => 'required|regex:/\+?\d+/m',
+            'phone'      => 'required|string|regex:/\+?\d+/m',
         ]);
 
         $data = UserRegisterData::fromRequest($request->all());

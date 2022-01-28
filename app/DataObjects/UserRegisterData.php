@@ -4,7 +4,7 @@ namespace App\DataObjects;
 
 use App\ValueObject\PasswordObject;
 
-class UserRegisterData
+final class UserRegisterData
 {
     /**
      * @param string         $firstName
@@ -13,7 +13,7 @@ class UserRegisterData
      * @param PasswordObject $password
      * @param string         $phone
      */
-    public function __construct(
+    private function __construct(
         private string         $firstName,
         private string         $lastName,
         private string         $email,
@@ -21,20 +21,6 @@ class UserRegisterData
         private string         $phone,
     )
     {
-    }
-
-    /**
-     * @return array
-     */
-    public function toStore(): array
-    {
-        return [
-            'first_name' => $this->firstName,
-            'last_name'  => $this->lastName,
-            'email'      => $this->email,
-            'password'   => $this->password->getHashed(),
-            'phone'      => $this->phone,
-        ];
     }
 
     /**
@@ -50,5 +36,19 @@ class UserRegisterData
             new PasswordObject($data['password']),
             $data['phone'],
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function toStore(): array
+    {
+        return [
+            'first_name' => $this->firstName,
+            'last_name'  => $this->lastName,
+            'email'      => $this->email,
+            'password'   => $this->password->getHashed(),
+            'phone'      => $this->phone,
+        ];
     }
 }

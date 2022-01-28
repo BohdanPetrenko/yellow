@@ -20,12 +20,10 @@ class CompanyFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'name'        => $this->faker->name,
-            'user_id'     => User::query()->inRandomOrder()->firstOrFail(),
-            'title'       => $this->faker->title,
+            'title'       => $this->faker->company,
             'phone'       => $this->faker->phoneNumber,
             'description' => $this->faker->realText(60),
         ];
